@@ -3,13 +3,14 @@ driver:
   name: vagrant
 
 provisioner:
-  name: chef_solo
+  name: chef_zero
 
 platforms:
   - name: centos-6.4
 
+data_bags_path: "/home/jpereira/REPOS/chef-repo/data_bags"
 suites:
   - name: default
-    run_list: main::default, users::default
+    run_list: main::default
     attributes:
     cookbook_path: ./cookbooks/

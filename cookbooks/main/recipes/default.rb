@@ -1,14 +1,14 @@
-case node['platform']
-	when 'centos'
-		package 'epel-release'
-end
-yum_package 'nginx'
-yum_package 'mysql-server' do
-	action :install
-end
+#case node['platform'] 
+#	when 'centos'
+#		package 'epel-release'
+#end 	
 
-users_manage 'DevOps' do
-        group_id 214
+#package 'nginx'
+#package 'mysql-server' do
+#	action :install
+#end
+
+users_manage 'devops' do
         action [:create]
         data_bag 'user'
 end
@@ -20,9 +20,12 @@ template '/home/devops/ahoi.sh' do
 	mode '0755'
 end
 
-script 'ahoi.sh' do
-	interpreter 'bash'
-	cwd '/home/devops/'
-	action :run
+bash 'testScriptRun' do
+	user 'root'
+	cwd '/home/devops'
+	code <<-EOH
+	     ./ahoi.sh
+	 EOH
 end
+
 
