@@ -10,5 +10,6 @@ platforms:
 
 suites:
   - name: default
-    run_list: main
+    run_list: main::default, users::default
     attributes:
+    cookbook_path: ./cookbooks/
