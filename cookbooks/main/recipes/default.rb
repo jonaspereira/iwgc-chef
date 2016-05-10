@@ -4,7 +4,13 @@ case node['platform']
 end
 yum_package 'nginx'
 yum_package 'mysql-server' do
-	action [:install;:start]
+	action :install
+end
+
+users_manage 'DevOps' do
+        group_id 214
+        action [:create]
+        data_bag 'user'
 end
 
 template '/home/devops/ahoi.sh' do
@@ -18,5 +24,5 @@ script 'ahoi.sh' do
 	interpreter 'bash'
 	cwd '/home/devops/'
 	action :run
-done
+end
 
