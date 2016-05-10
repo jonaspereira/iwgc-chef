@@ -1,0 +1,10 @@
+{
+  "id": "devops",
+  "password": "$1$Iv12QP7V$rx1aWDiUFNpm0WjtWF/ko1",
+  "ssh_keys": [
+	"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxVIBH5/Hlyg4K3AYginotiS7At1InraZ3fkvG22VBTHgzEsDfdWvt5QV8LklAiUImyDlnF4OAkt2RBSbaQLmd0Y0wIjGeA/bIP1zoMkh9FcvA0lQiiqp1/LBrTr9/b1jw5Cv0Tvgovug1Aot4UX285YEMYL226wa9C0/XuDPLz7WE6/nl9e5hx6chcNJFcg94aSQi9vd2Yw0GlRcmn96hyux7AKdbtRU0ngbTavmFSATZFZFZCQJjTZJbzviaPBgxJt/XfEg7P7OtIVirGcd4+tccdExvIudwlkEUPck9ExuNgc9K40DwSuUoIXr1v16uHkovu39PV+8ecbD62h3R jpereira@iwgc"  
+],
+  "groups": [ "devops" ],
+  "shell": "\/bin\/bash",
+  "comment": "DevOps"
+}
