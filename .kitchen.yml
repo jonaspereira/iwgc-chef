@@ -8,7 +8,7 @@ provisioner:
 platforms:
   - name: centos-6.5
 
-data_bags_path: "/home/jpereira/REPOS/chef-repo/data_bags"
+data_bags_path: "/home/jpereira/REPOS/chef/chefiwgc/data_bags"
 suites:
   - name: default
     run_list: main::default
