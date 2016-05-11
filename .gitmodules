@@ -1,0 +1,6 @@
+[submodule "cookbooks/nginx"]
+	path = cookbooks/nginx
+	url = https://github.com/miketheman/nginx.git
+[submodule "cookbooks/users"]
+	path = cookbooks/users
+	url = https://github.com/chef-cookbooks/users.git
