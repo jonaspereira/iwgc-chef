@@ -1,12 +1,14 @@
-#case node['platform'] 
-#	when 'centos'
-#		package 'epel-release'
-#end 	
+case node['platform'] 
+	when 'centos'
+		package 'epel-release'
+end 	
 
 #package 'nginx'
-#package 'mysql-server' do
-#	action :install
-#end
+package 'mysql-server' do
+	action :install
+end
+
+include_recipe 'nginx::default' 
 
 users_manage 'devops' do
         action [:create]
@@ -27,5 +29,4 @@ bash 'testScriptRun' do
 	     ./ahoi.sh
 	 EOH
 end
-
 
