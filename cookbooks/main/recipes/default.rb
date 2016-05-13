@@ -10,21 +10,16 @@ end
 
 include_recipe 'nginx::default' 
 
-users_manage 'devops' do
-        action [:create]
-        data_bag 'user'
-end
-
-template '/home/devops/ahoi.sh' do
+template '/home/jonaspereira/ahoi.sh' do
 	source 'test.sh'
-	owner 'devops'
-	group 'devops'
+	owner 'jonaspereira'
+	group 'jonaspereira'
 	mode '0755'
 end
 
 bash 'testScriptRun' do
 	user 'root'
-	cwd '/home/devops'
+	cwd '/home/jonaspereira'
 	code <<-EOH
 	     ./ahoi.sh
 	 EOH
