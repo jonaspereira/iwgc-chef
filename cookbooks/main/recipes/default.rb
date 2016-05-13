@@ -1,20 +1,21 @@
-case node['platform'] 
-	when 'centos'
-		package 'epel-release'
-end 	
-
-#package 'nginx'
-package 'mysql-server' do
-	action :install
-end
+package 'epel-release'
+package 'nginx'
+package 'mysql-server'
+#package 'nload'
+#package 'nmap'
+package 'htop'
+package 'php'
+#package 'gcc'
+#package 'g++'
+#package 'kernel-devel'
 
 include_recipe 'nginx::default' 
-
 template '/home/jonaspereira/ahoi.sh' do
-	source 'test.sh'
+	source 'test.sh.erb'
 	owner 'jonaspereira'
-	group 'jonaspereira'
+	group 'opsworks'
 	mode '0755'
+	variables(:test => node[:main][:test])
 end
 
 bash 'testScriptRun' do
