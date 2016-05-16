@@ -1,6 +1,12 @@
+
 include_recipe 'nginx::default' 
+#Install necessary packages 
 include_recipe 'main::packageList'
+#Install and configure AWS monitoring Scripts for custom Metrics in AWSCloudwatch
 include_recipe 'main::monScripts'
+
+
+#############################################################################################
 #template '/home/jonaspereira/ahoi.sh' do
 #	source 'test.sh.erb'
 #	owner 'jonaspereira'

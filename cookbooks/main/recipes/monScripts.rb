@@ -1,6 +1,9 @@
+#Configuration and input Variables
 awsMetrics = ['mem-util', 'disk-space-util --disk-path=/']
-key=node[:awsKey]
-secret=node[:awsSecret]
+key = node[:awsAccess][:awsKey]
+secret = node[:awsAccess][:awsSecret]
+
+#Download and install AWS monitoring tools
 bash 'awsMonitotingInstall' do
 	interpreter "bash"
 	cwd "/home/ec2-user"
@@ -11,6 +14,7 @@ bash 'awsMonitotingInstall' do
  	 EOH
 end 
 
+#Add custom metrics to cronjob
 awsMetrics.each do |metric|
 	sendMetric= metric
 	cron metric do
