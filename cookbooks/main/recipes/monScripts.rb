@@ -32,7 +32,9 @@ template '/home/ec2-user/generateAlarms.sh' do
        mode '0755'
        variables( {
 		:environment => node[:environment], 
-		:alarmAction => node[:alarm]
+		:alarmAction => node[:alarm],
+		:accessKey => node[:awsAccess][:awsKey],
+		:accessSecret => node[:awsAccess][:awsSecret]
 		})
 end
 
