@@ -23,3 +23,24 @@ awsMetrics.each do |metric|
 		command "~/aws-scripts-mon/mon-put-instance-data.pl --#{sendMetric} --from-cron --aws-access-key-id=#{key} --aws-secret-key=#{secret}"
 	end
 end
+
+#GenerateAlarms Script
+template '/home/ec2-user/generateAlarms.sh' do
+       source 'generateAlarms.sh.erb'
+       owner 'ec2-user'
+       group 'opsworks'
+       mode '0755'
+       variables( {
+		:environment => node[:environment], 
+		:alarmAction => node[:alarm]
+		})
+end
+
+#Run command to generate the alarms in AWS
+bash 'generateAlarmsRun' do
+	user 'ec2-user'
+	cwd '/home/ec2-user'
+	code <<-EOH
+	     ./generateAlarms.sh create
+	 EOH
+end

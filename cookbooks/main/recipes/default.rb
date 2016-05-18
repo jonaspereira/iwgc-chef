@@ -1,5 +1,12 @@
 
-include_recipe 'nginx::default' 
+case node[:layer]
+	when 'webserver'
+		include_recipe 'nginx::default' 
+	else 
+		log 'No layer prescribed'
+end
+
+
 #Install necessary packages 
 include_recipe 'main::packageList'
 #Install and configure AWS monitoring Scripts for custom Metrics in AWSCloudwatch

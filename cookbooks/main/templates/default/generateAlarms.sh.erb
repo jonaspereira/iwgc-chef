@@ -1,0 +1,37 @@
+#!/bin/bash
+
+#Configs
+me=`ec2-metadata -i | cut -f 2 -d ':'| cut -f2 -d ' '`
+echo "$me"
+environment="<%=@environment%>"
+alarm_action= "<%=@alarmAction%>"
+alarmsList=("CPU-High" "RAM-High" "RootDisk")
+#Functions
+function createAlarms() {
+#Cpu
+	aws cloudwatch put-metric-alarm --alarm-name "${me}@${environment}CPU-High" --alarm-description "CPU is higher than 95% @ ${me}" --metric-name CPUUtilization  --namespace AWS/EC2 --statistic Average --period 300 --threshold 95 --comparison-operator GreaterThanThreshold --dimensions Name=InstanceId,Value="${me}" --evaluation-periods 3 --alarm-actions ${alarm_action} --unit Percent
+#RAM
+       aws cloudwatch put-metric-alarm --alarm-name "${me}@${environment}RAM-High" --alarm-description "RAM is higher than 100% @ ${me}" --metric-name MemoryUtilization  --namespace "System/Linux" --statistic Average --period 300 --threshold 95 --comparison-operator GreaterThanThreshold --dimensions Name=InstanceId,Value="${me}" --evaluation-periods 3 --alarm-actions ${alarm_action} --unit Percent
+#rootDisk
+	aws cloudwatch put-metric-alarm --alarm-name "${me}@${environment}RootDisk" --alarm-description "Root Disk > 95% @ ${me}" --metric-name DiskSpaceUtilization --namespace "System/Linux" --statistic Average --period 300 --threshold 95 --comparison-operator GreaterThanThreshold --dimensions Name=InstanceId,Value="${me}" Name=MountPath,Value="/" Name=Filesystem,Value="/dev/xvda1" --evaluation-periods 3 --alarm-actions ${alarm_action} --unit Percent
+}
+
+function deleteAlarms(){
+	for alarm in ${alarmsList[@]}; do
+		echo "Deleting ${me}@${environment}${alarm}"
+		aws cloudwatch delete-alarms --alarm-names "${me}@${environment}${alarm}"	
+	done
+}
+
+function main() {
+	if [ ${1} == "create" ]; then
+		createAlarms
+	elif [ ${1} == "delete" ]; then
+		deleteAlarms
+	fi
+}
+
+#Call
+set -e 
+main ${1}
+set +e
