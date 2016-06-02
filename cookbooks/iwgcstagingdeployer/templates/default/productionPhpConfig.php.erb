@@ -1,0 +1,136 @@
+
+<?php
+/** This File is managed by Chef, all changes will be overriden once the Chef configure action takes place, to perform permanent  changes to this file please make it on the Chef Repositorie */
+
+/**
+ * Config common to all environments
+ * @var array
+ */
+$shared = require(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'shared.php');
+/**
+ * This is the main Web application configuration. Any writable
+ * CWebApplication properties can be configured here.
+ * Any CWebApplication properties that does not exist in CConsoleApplication
+ * need to be unset in console config.
+ */
+$config = array(
+    'components' => array(
+        /**
+         * Database
+         */
+        'db' => array(
+            'connectionString' => 'mysql:<%=@dbEndpoint%>;dbname=<%=@dbSchema%>',
+            'emulatePrepare' => true,
+            'username' => '<%=@dbUser%>',
+            'password' => '<%=@dbPassword%>',
+            'charset' => 'utf8',
+            'pdoClass' => 'NestedTransactionPDO',
+            // performance
+            'schemaCachingDuration' => 600,
+            'persistent' => true,
+        ),
+        'cache' => [
+            'class' => '<%=@cacheClas%>',
+            'connectionParameters' => [
+                'host' => '<%=@cachehost%>',
+                'database' => <%=@cacheDB%>,
+            ],
+        ],
+        'sessionCache' => [
+            'class' => '<%=@sessionCacheClass%>',
+            'connectionParameters' => [
+                'host' => '<%=@sessionCacheHost%>',
+                'database' => <%=@sessioncacheDb%>,
+            ],
+        ],
+        /**
+         * Entity solr core
+         */
+        'solariumEntity' => array(
+            "class" => "SolariumWrapper",
+            "clientOptions" => array(
+                'endpoint' => array(
+                    'localhost' => array(
+                        'host' => '<%=@solrHost%>',
+                        'port' => '<%=@solrPort%>',
+                        'path' => '/solr/entity',
+                        // extend timeout from default 5s
+                        'timeout' => 8,
+                    )
+                )
+            ),
+        ),
+        /**
+         * Gazzette solr core
+         */
+        'solariumGazzette' => array(
+            "class" => "SolariumWrapper",
+            "clientOptions" => array(
+                'endpoint' => array(
+                    'localhost' => array(
+                        'host' => '<%=@solrHost%>',
+                        'port' => '<%=@solrPort%>',
+                        'path' => '/solr/gazette',
+                        // extend timeout from default 5s
+                        'timeout' => 8,
+                    )
+                )
+            ),
+        ),
+        'apiClientFactory' => [
+            'endpoint' => '<%=@apiEndpoint%>',
+            'port' => <%=@apiPort%>,
+        ],
+        'log' => array(
+            'routes' => array(
+                // email alerts
+                'EmailLogRoute' => array(
+                    'class' => 'EmailLogRoute',
+                    'levels' => 'error',
+                    'except' => 'exception.CHttpException.404,exception.CHttpException.400, exception.Solarium\Exception\HttpException',
+                    'emails' => array('dan.agnew@iwantgreatcare.org', 'vitaliy.leshchenko@iwantgreatcare.org','ben.francis@iwantgreatcare.org'),
+                    'filter' => array(
+                        'class' => 'CLogFilter',
+                        'logVars' => array('_GET','_POST','_FILES','_COOKIE','_SERVER'),
+                    ),
+                    'sentFrom' => 'alerts.' . APPLICATION_ENV . '@iwgc.org',
+                    'subject' => '[' . APPLICATION_ENV . ']!Application Alert!',
+                ),
+            ),
+        ),
+    ),
+    'params' => array(
+        'usePrimaryDomainUrlRule' => <%=@UsePrimaryDomainRule%>,
+        'stripe' => array(
+            'publishableKey' => '<%=@stripePublishableKey%>',
+            'secretKey' => '<%=@stripeSecretKey%>',
+        ),
+        'QueueProvider' => array(
+            'provider' => '<%=@queueProvider%>',
+            'Amazon' => array(
+                'alertQueue' => array(
+                    'credentials' => array(
+                        'key' => '<%=@accessKey%>',
+                        'secret' => '<%=@accessSecret%>',
+                        'region' => 'eu-west-1'
+                    ),
+                    'QueueUrl' => '<%=@alertQueueUr%>',
+                ),
+                'moderationQueue' => array(
+                    'credentials' => array(
+                        'key' => '<%=@accessKey%>',
+                        'secret' => '<%=@accessSecret%>',
+                        'region' => 'eu-west-1'
+                    ),
+                    'QueueUrl' => '<%=@moderationQueueUrl%>',
+                ),
+            ),
+        ),
+    ),
+);
+
+/**
+ * Final config
+ * @var array
+ */
+return CMap::mergeArray($shared, $config);
